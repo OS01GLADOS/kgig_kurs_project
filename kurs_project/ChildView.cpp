@@ -47,6 +47,11 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 void CChildView::OnPaint() 
 {
 	CPaintDC dc(this); // контекст устройства для рисования
+
+	dc.MoveTo(100, 100);
+	dc.LineTo(0, 100);
+	dc.LineTo(167, 200);
+	dc.LineTo(322, 3);
 	
 	// TODO: Добавьте код обработки сообщений
 	

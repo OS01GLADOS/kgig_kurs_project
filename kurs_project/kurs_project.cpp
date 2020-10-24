@@ -9,6 +9,8 @@
 #include "kurs_project.h"
 #include "MainFrm.h"
 
+#include "GraphBitMap.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -24,7 +26,20 @@ END_MESSAGE_MAP()
 
 void CkursprojectApp::make_screenshot()
 {
-	
+	CFileDialog fileDialog((BOOL)FALSE, NULL, L"Tor_screenshot.bmp");	//объект класса выбора файла
+	fileDialog.m_ofn.lpstrFilter = (LPCTSTR)"images(.bmp)\0*.bmp\0\0";
+	int result = fileDialog.DoModal();	//запустить диалоговое окно
+	if (result == IDOK)	//если файл выбран
+	{
+		CWnd *cwnd = AfxGetMainWnd();
+		HWND hwnd = cwnd->GetSafeHwnd();
+
+		if (ClientToBmp(hwnd, (char*)fileDialog.GetPathName().GetBuffer()) == 0)
+			AfxMessageBox(_T("Saved"));
+		else
+			AfxMessageBox(_T("Error"));
+
+	}
 }
 
 // Создание CkursprojectApp
