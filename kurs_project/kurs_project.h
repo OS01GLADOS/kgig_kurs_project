@@ -29,6 +29,7 @@ public:
 
 public:
 	afx_msg void OnAppAbout();
+	void make_screenshot();
 	DECLARE_MESSAGE_MAP()
 };
 

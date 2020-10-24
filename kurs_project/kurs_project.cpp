@@ -19,8 +19,13 @@
 
 BEGIN_MESSAGE_MAP(CkursprojectApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, &CkursprojectApp::OnAppAbout)
+	ON_COMMAND(ID_MAKE_SCREENSHOT, &CkursprojectApp::make_screenshot)
 END_MESSAGE_MAP()
 
+void CkursprojectApp::make_screenshot()
+{
+	
+}
 
 // Создание CkursprojectApp
 
