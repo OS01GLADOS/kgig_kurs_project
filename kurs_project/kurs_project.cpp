@@ -10,6 +10,7 @@
 #include "MainFrm.h"
 
 #include "GraphBitMap.h"
+#include "CChangeParemetersDialog.h"
 
 
 #ifdef _DEBUG
@@ -22,6 +23,7 @@
 BEGIN_MESSAGE_MAP(CkursprojectApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, &CkursprojectApp::OnAppAbout)
 	ON_COMMAND(ID_MAKE_SCREENSHOT, &CkursprojectApp::make_screenshot)
+	ON_COMMAND(ID_SET_MODEL_PARAMETERS,&CkursprojectApp::set_model_parameters)
 END_MESSAGE_MAP()
 
 void CkursprojectApp::make_screenshot()
@@ -42,6 +44,12 @@ void CkursprojectApp::make_screenshot()
 	}
 }
 
+void CkursprojectApp::set_model_parameters()
+{
+	//AfxMessageBox(_T("параметры модели"));
+	CChangeParemetersDialog ParametersDialog;
+	ParametersDialog.DoModal();
+}
 // Создание CkursprojectApp
 
 CkursprojectApp::CkursprojectApp() noexcept

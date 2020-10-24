@@ -187,6 +187,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CChangeParemetersDialog.h" />
     <ClInclude Include="ChildView.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GraphBitMap.h" />
@@ -197,6 +198,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CChangeParemetersDialog.cpp" />
     <ClCompile Include="ChildView.cpp" />
     <ClCompile Include="GraphBitMap.cpp" />
     <ClCompile Include="kurs_project.cpp" />
