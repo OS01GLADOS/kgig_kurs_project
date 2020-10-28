@@ -189,26 +189,32 @@
   <ItemGroup>
     <ClInclude Include="CChangeParemetersDialog.h" />
     <ClInclude Include="ChildView.h" />
+    <ClInclude Include="CMatrix.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GraphBitMap.h" />
     <ClInclude Include="kurs_project.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MyGDI.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Top.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CChangeParemetersDialog.cpp" />
     <ClCompile Include="ChildView.cpp" />
+    <ClCompile Include="CMatrix.cpp" />
     <ClCompile Include="GraphBitMap.cpp" />
     <ClCompile Include="kurs_project.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MyGDI.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Tor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="kursproject.rc" />
