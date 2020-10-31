@@ -5,6 +5,31 @@
 
 const double pi = 3.14159265358979;
 
+//-------------------------------------------------------------------------------
+CMatrix::CMatrix(int Nrow, int Ncol)
+// Nrow - число строк
+// Ncol - число столбцов
+{
+	n_rows = Nrow;
+	n_cols = Ncol;
+	array = new double*[n_rows];
+	for (int i = 0; i < n_rows; i++) array[i] = new double[n_cols];
+	for (int i = 0; i < n_rows; i++)
+		for (int j = 0; j < n_cols; j++) array[i][j] = 0;
+}
+
+//---------------------------------------------------------------------------------
+CMatrix::CMatrix(int Nrow)  //Вектор
+// Nrow - число строк
+{
+	n_rows = Nrow;
+	n_cols = 1;
+	array = new double*[n_rows];
+	for (int i = 0; i < n_rows; i++) array[i] = new double[n_cols];
+	for (int i = 0; i < n_rows; i++)
+		for (int j = 0; j < n_cols; j++) array[i][j] = 0;
+}
+
 CMatrix::CMatrix()
 {
  n_rows=1;
@@ -15,30 +40,9 @@ CMatrix::CMatrix()
    for(int j=0;j<n_cols;j++) array[i][j]=0;
  }
 
-//-------------------------------------------------------------------------------
-CMatrix::CMatrix(int Nrow,int Ncol)
-// Nrow - число строк
-// Ncol - число столбцов
-{
- n_rows=Nrow;
- n_cols=Ncol;
- array=new double*[n_rows];
- for(int i=0;i<n_rows;i++) array[i]=new double[n_cols];
- for(int i=0;i<n_rows;i++)
-   for(int j=0;j<n_cols;j++) array[i][j]=0;
- }
 
-//---------------------------------------------------------------------------------
-CMatrix::CMatrix(int Nrow)  //Вектор
-// Nrow - число строк
-{
- n_rows=Nrow;
- n_cols=1;
- array=new double*[n_rows];
- for(int i=0;i<n_rows;i++) array[i]=new double[n_cols];
- for(int i=0;i<n_rows;i++)
-   for(int j=0;j<n_cols;j++) array[i][j]=0;
- }
+
+
 //---------------------------------------------------------------------------------
 CMatrix::~CMatrix()
 {
@@ -283,23 +287,42 @@ CMatrix CMatrix::GetCol(int k,int n, int m)
 	for(int i=n;i<=m;i++)M(i-n,0)=(*this)(i,k);
 	return M;
 }
+
 //---------------------------------------------------------------------------------
-CMatrix CMatrix::RedimMatrix(int NewRow,int NewCol)
+CMatrix CMatrix::RedimMatrix(int NewRow)
+// Изменяет размер матрицы с уничтожением данных
+// NewRow - новое число строк
+// NewCol=1
+{
+	for (int i = 0; i < n_rows; i++) delete array[i];
+	delete array;
+	n_rows = NewRow;
+	n_cols = 1;
+	array = new double*[n_rows];
+	for (int i = 0; i < n_rows; i++) array[i] = new double[n_cols];
+	for (int i = 0; i < n_rows; i++)
+		for (int j = 0; j < n_cols; j++) array[i][j] = 0;
+	return (*this);
+}
+
+//---------------------------------------------------------------------------------
+CMatrix CMatrix::RedimMatrix(int NewRow, int NewCol)
 // Изменяет размер матрицы с уничтожением данных
 // NewRow - новое число строк
 // NewCol - новое число столбцов 
 {
-	for(int i=0;i<n_rows;i++) delete array[i];
+	for (int i = 0; i < n_rows; i++) delete array[i];
 	delete array;
-	n_rows=NewRow;
-	n_cols=NewCol;
-	array=new double*[n_rows];
-	for(int i=0;i<n_rows;i++) array[i]=new double[n_cols];
-	for(int i=0;i<n_rows;i++)
-		for(int j=0;j<n_cols;j++) array[i][j]=0;
+	n_rows = NewRow;
+	n_cols = NewCol;
+	if (n_cols <=0)
+		n_cols = 1;
+	array = new double*[n_rows];
+	for (int i = 0; i < n_rows; i++) array[i] = new double[n_cols];
+	for (int i = 0; i < n_rows; i++)
+		for (int j = 0; j < n_cols; j++) array[i][j] = 0;
 	return (*this);
 }
-
 //---------------------------------------------------------------------------------
 CMatrix CMatrix::RedimData(int NewRow,int NewCol)
 // Изменяет размер матрицы с сохранением данных, которые можно сохранить
@@ -316,22 +339,7 @@ CMatrix CMatrix::RedimData(int NewRow,int NewCol)
 }
 
 
-//---------------------------------------------------------------------------------
-CMatrix CMatrix::RedimMatrix(int NewRow)
-// Изменяет размер матрицы с уничтожением данных
-// NewRow - новое число строк
-// NewCol=1
-{
-	for(int i=0;i<n_rows;i++) delete array[i];
-	delete array;
-	n_rows=NewRow;
-	n_cols=1;
-	array=new double*[n_rows];
-	for(int i=0;i<n_rows;i++) array[i]=new double[n_cols];
-	for(int i=0;i<n_rows;i++)
-		for(int j=0;j<n_cols;j++) array[i][j]=0;
-	return (*this);
-}
+
 
 //---------------------------------------------------------------------------------
 CMatrix CMatrix::RedimData(int NewRow)
@@ -340,7 +348,7 @@ CMatrix CMatrix::RedimData(int NewRow)
 // NewCol=1
 {
 	CMatrix Temp=(*this);
-	this->RedimMatrix(NewRow);
+	this->RedimMatrix(NewRow,1);
 	int min_rows=Temp.rows()<(*this).rows()?Temp.rows():(*this).rows();	
 	for(int i=0;i<min_rows;i++)(*this)(i)=Temp(i);	
 	return (*this);

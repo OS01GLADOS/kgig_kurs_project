@@ -27,7 +27,7 @@ public:
 	CMatrix GetRow(int,int,int);			 
 	CMatrix GetCol(int);			    // ¬озвращает столбец по номеру
 	CMatrix GetCol(int,int,int);
-	CMatrix RedimMatrix(int,int);	    // »змен€ет размер матрицы с уничтожением данных
+	CMatrix RedimMatrix(int, int);	    // »змен€ет размер матрицы с уничтожением данных
 	CMatrix RedimData(int,int);         // »змен€ет размер матрицы с сохранением данных, 
 	                                    //которые можно сохранить
 	CMatrix RedimMatrix(int);	        // »змен€ет размер матрицы с уничтожением данных

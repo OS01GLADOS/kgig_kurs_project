@@ -2,8 +2,8 @@
 #include "Top.h"
 #include "CMatrix.h"
 #include "MyGDI.h"
-#define NOV 36
-#define NOVM 360
+
+#define NOVM 35
 
 const double pi = 3.14159265358979;
 
@@ -24,7 +24,7 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 		//точки в ВСК
 		CMatrix ViewVert(4, NoV);
 		//точки в ОСК
-		CPoint MasVert[NOV];
+		CPoint MasVert[NOVM*NOVM];
 		for (int i = 0; i < NoV; i++) {
 			CMatrix V = MV * Verticles.GetCol(i);	//пересчет МСК->ВСК
 			V(2) = 1;
@@ -139,6 +139,12 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 
 Top::Top(void)
 {
+
+	NoV = NOVM*NOVM;
+	NoVm = NOVM;
+	NoVb = NOVM;
+
+	Verticles = CMatrix();
 	Verticles.RedimMatrix(4, NoV);
 	int R = 60, r = 20, i = 0;
 	//установка координат точек тора в зависимости от радиусов
@@ -157,6 +163,10 @@ Top::Top(void)
 
 Top::Top(int R, int r)
 {
+	NoV = NOVM * NOVM;
+	NoVm = NOVM;
+	NoVb = NOVM;
+
 	Verticles.RedimMatrix(4, NoV);
 	int i = 0;
 	//установка координат точек тора в зависимости от заданных радиусов
@@ -171,9 +181,7 @@ Top::Top(int R, int r)
 	}
 	//rs = CRectD(-100, -100, 100, 100);
 	rs = CRect(-100, -100, 100, 100);
-	NoV = NOV;
-	NoVm = NOVM;
-	NoVb = NOVM;
+
 }
 
 Top::~Top(void)

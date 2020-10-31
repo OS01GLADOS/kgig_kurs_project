@@ -4,6 +4,8 @@
 
 
 #pragma once
+#include "Top.h"
+#include "CMatrix.h"
 
 
 // Окно CChildView
@@ -16,7 +18,10 @@ public:
 
 // Атрибуты
 public:
-
+	Top pp;
+	CMatrix PView;
+	CMatrix PLight;
+	COLORREF col;
 // Операции
 public:
 
