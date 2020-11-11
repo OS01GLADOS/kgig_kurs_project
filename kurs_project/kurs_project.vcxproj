@@ -220,6 +220,8 @@
     <ResourceCompile Include="kursproject.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="resource.hm" />
     <None Include="res\kursproject.rc2" />
   </ItemGroup>
   <ItemGroup>

@@ -32,7 +32,7 @@ public:
 // Реализация
 public:
 	virtual ~CChildView();
-
+	void set_model_parameters();
 	// Созданные функции схемы сообщений
 protected:
 	afx_msg void OnPaint();

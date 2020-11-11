@@ -31,7 +31,7 @@ public:
 	afx_msg void OnAppAbout();
 
 	void make_screenshot();
-	void set_model_parameters();
+	
 
 	DECLARE_MESSAGE_MAP()
 };

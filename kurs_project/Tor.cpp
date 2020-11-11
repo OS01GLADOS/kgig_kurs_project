@@ -3,16 +3,19 @@
 #include "CMatrix.h"
 #include "MyGDI.h"
 
-#define NOVM 35
+#define NOV 36
+
+#define NOVB 20
+#define NOVM 36
 
 const double pi = 3.14159265358979;
 
 void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COLORREF col) {
 	try {
-		CPen* pn = new CPen(PS_NULL, 0, RGB(0, 0, 0));
+		CPen* pn = new CPen(PS_NULL, 0, RGB(0, 0, 0)/*RGB(0, 0, 0)*/);
 		dc.SelectObject(pn);
 		double R = GetRValue(col), G = GetGValue(col), B = GetBValue(col);
-		double Kd = 1, Ks = 1, I = 1, Lights = 0;
+		double Kd = 1, Ks = 1, I = 1, Lights = 0;//Lights = 0
 		//преобразование сферических координат наблюдателя в декартовы
 		CMatrix ViewCart = SphereToCart(PView);
 		//преобразование сферических координат источника света в декартовы
@@ -24,7 +27,7 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 		//точки в ВСК
 		CMatrix ViewVert(4, NoV);
 		//точки в ОСК
-		CPoint MasVert[NOVM*NOVM];
+		CPoint MasVert[NOV*NOV];
 		for (int i = 0; i < NoV; i++) {
 			CMatrix V = MV * Verticles.GetCol(i);	//пересчет МСК->ВСК
 			V(2) = 1;
@@ -68,13 +71,17 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 				VE = Verticles.GetCol(i + lr * NoVm, 0, 2);//точка на следующем малом круге
 				V1 = R2 - R1; V2 = VE - R1;
 				VN = VectorMult(V2, V1);//вектор нормали
+				
 				sm = ScalarMult(VN, ViewCart);
-				if (sm >= 0) {//проверка видимости грани
-					if (ScalarMult(VN, LightCart) >= 0) {
+				//проверка видимости грани   (sm >= 0)
+					if (ScalarMult(VN, LightCart) >= 0 && (sm >= 0)) {
 						//расчет освещенности для диффузионной модели освещения
-						Lights = (double)I*Kd*cosViV2(VN, LightCart);
+						//Lights = ((I*Kd*cosViV2(VN, LightCart)));
+						Lights = 0.5;
 					}
 					else Lights = 0;
+
+
 					//прорисовка полигона
 					CPoint* p = new CPoint[4];
 					p[0] = MasVert[k + jr * NoVm];
@@ -85,7 +92,7 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 					dc.SelectObject(br);
 					dc.Polygon(p, 4);
 					delete br;
-				}
+				
 				if (i == i1)break;
 			}
 			//
@@ -108,13 +115,14 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 				V1 = R2 - R1; V2 = VE - R1;
 				VN = VectorMult(V2, V1);//вектор нормали
 				sm = ScalarMult(VN, ViewCart);
-				if (sm >= 0) {//проверка видимости грани
-					if (ScalarMult(VN, LightCart) >= 0) {
+				if (true) {//проверка видимости грани (sm >= 0)
+					if (ScalarMult(VN, LightCart) >= 0 && sm >= 0) {
 						//расчет освещенности для диффузионной модели освещения
-						Lights = (double)I*Kd*cosViV2(VN, LightCart);
+						Lights = (I*Kd*cosViV2(VN, LightCart));
 						//расчет освещенности для зеркальной модели освещения
 					}
 					else Lights = 0;
+
 					//прорисовка полигона
 					CPoint* p = new CPoint[4];
 					p[0] = MasVert[k + jl * NoVm];
@@ -163,9 +171,9 @@ Top::Top(void)
 
 Top::Top(int R, int r)
 {
-	NoV = NOVM * NOVM;
+	NoV = NOV * NOV;
 	NoVm = NOVM;
-	NoVb = NOVM;
+	NoVb = NOVB;
 
 	Verticles.RedimMatrix(4, NoV);
 	int i = 0;
