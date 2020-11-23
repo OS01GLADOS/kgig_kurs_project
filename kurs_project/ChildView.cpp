@@ -68,6 +68,7 @@ CChildView::~CChildView()
 
 BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_PAINT()
+	ON_WM_SIZE()
 	ON_COMMAND(ID_SET_MODEL_PARAMETERS, &CChildView::set_model_parameters)
 END_MESSAGE_MAP()
 
@@ -90,55 +91,76 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CChildView::OnPaint()
 {
+	CFrameWnd* pWnd = GetParentFrame();
+
+	CRect SpaceToDraw = WinRect;
+	CPoint CurrPoint = SpaceToDraw.TopLeft();
+	int startX = CurrPoint.x, startY = CurrPoint.y;
+	CurrPoint = SpaceToDraw.BottomRight();
+	int endX = CurrPoint.x, endY = CurrPoint.y;
+	//height width
+	int height = endY - startY;
+	int width = endX - startX;
+	int a;
+	if (height > width)
+		a = width;
+	else
+		a = height;
+	CurrPoint = SpaceToDraw.CenterPoint();
+	int centerX = CurrPoint.x, centerY = CurrPoint.y;
+
+
 	CPaintDC dc(this); // контекст устройства для рисования
 
-	int startX = 90, startY = 10, endX = startX + 500, endY = startY + 500;
-	
 	wchar_t buffer[6];
 	CString text = L"R = ";
-
 	swprintf_s(buffer, L"%d", R);
 	text.Append(buffer);
-	dc.TextOutW(endX + 5, endY, text, text.GetLength());
+	dc.TextOutW(startX + 5, startY, text, text.GetLength());
+
 	text = L"r = ";
 	swprintf_s(buffer, L"%d", r);
 	text.Append(buffer);
-	dc.TextOutW(endX + 5, endY + 20, text, text.GetLength());
+	dc.TextOutW(startX + 5, startX + 20, text, text.GetLength());
 
 	text = L"Наблюдатель_R = ";
 	swprintf_s(buffer, L"%d", Pview0);
 	text.Append(buffer);
-	dc.TextOutW(endX + 5, endY + 40, text, text.GetLength());
+	dc.TextOutW(startX + 5, startY + 40, text, text.GetLength());
+
 	text = L"Наблюдатель_Fi = ";
 	swprintf_s(buffer, L"%d", Pview1);
 	text.Append(buffer);
-	dc.TextOutW(endX + 5, endY + 60, text, text.GetLength());
+	dc.TextOutW(startX + 5, startY + 60, text, text.GetLength());
+
 	text = L"Наблюдатель_Theta = ";
 	swprintf_s(buffer, L"%d", Pview2);
 	text.Append(buffer);
-	dc.TextOutW(endX + 5, endY + 80, text, text.GetLength());
+	dc.TextOutW(startX + 5, startY + 80, text, text.GetLength());
 
 	text = L"Свет_R = ";
 	swprintf_s(buffer, L"%d", Plight0);
 	text.Append(buffer);
-	dc.TextOutW(endX + 5 + 270, endY + 40, text, text.GetLength());
+	dc.TextOutW(startX + 5 + 270, startY + 40, text, text.GetLength());
+
 	text = L"Свет_Fi = ";
 	swprintf_s(buffer, L"%d", Plight1);
 	text.Append(buffer);
-	dc.TextOutW(endX + 5 + 270, endY + 60, text, text.GetLength());
+	dc.TextOutW(startX + 5 + 270, startY + 60, text, text.GetLength());
+
 	text = L"Свет_Theta = ";
 	swprintf_s(buffer, L"%d", Plight2);
 	text.Append(buffer);
-	dc.TextOutW(endX + 5 + 270, endY + 80, text, text.GetLength());
+	dc.TextOutW(startX + 5 + 270, startY + 80, text, text.GetLength());
 
 	text = L"Модель: ";
 	if (modelParam)
 		text.Append(L"Диффузная");
 	else
 		text.Append(L"Зеркальная");
-	dc.TextOutW(endX + 5 + 100, endY + 5, text, text.GetLength());
+	dc.TextOutW(startX + 5 + 100, startY + 5, text, text.GetLength());
 
-	pp.DrawEnlighted(dc, PView, PLight, CRect(startX, startY, endX, endY), col/*+модель*/);
+	pp.DrawEnlighted(dc, PView, PLight, CRect(centerX - a/2, centerY - a / 2, centerX + a / 2, centerY + a / 2), col/*+модель*/);
 
 }
 void CChildView::set_model_parameters()
@@ -184,4 +206,10 @@ void CChildView::set_model_parameters()
 
 }
 
+void CChildView::OnSize(UINT nType, int cx, int cy)
+{
+	CWnd::OnSize(nType, cx, cy);//для динамического изменения окна
+	WinRect.SetRect(0, 0, cx , cy );//параметры окна рисования
+	Invalidate();
+}
 

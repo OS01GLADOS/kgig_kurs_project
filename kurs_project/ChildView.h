@@ -22,13 +22,16 @@ public:
 	CMatrix PView;
 	CMatrix PLight;
 	COLORREF col;
+
+	CRect WinRect;	// Область в окне
+
 // Операции
 public:
 
 // Переопределение
 	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 // Реализация
 public:
 	virtual ~CChildView();
