@@ -18,11 +18,11 @@
 
 int R = 60 , r =30;
 
-int Pview0 = 10;
+int Pview0 = 1000;
 int Pview1 = 0;
 int Pview2 = 50;
 
-int Plight0 = 60;
+int Plight0 = 100;
 int Plight1 = 30;
 int Plight2 = 15;
 
@@ -69,6 +69,7 @@ CChildView::~CChildView()
 BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_PAINT()
 	ON_WM_SIZE()
+	ON_WM_KEYDOWN()
 	ON_COMMAND(ID_SET_MODEL_PARAMETERS, &CChildView::set_model_parameters)
 END_MESSAGE_MAP()
 
@@ -212,5 +213,51 @@ void CChildView::OnSize(UINT nType, int cx, int cy)
 	CWnd::OnSize(nType, cx, cy);//для динамического изменения окна
 	WinRect.SetRect(0, 0, cx , cy );//параметры окна рисования
 	Invalidate();
+}
+
+void CChildView::OnKeyDown(UINT nChar, UINT nRepCount, UINT nFlags) {
+	int step = 10;
+	//движение наблюдателя на стрелки
+	if (nChar == 37) {		//влево
+		PView(1) += step;
+		if (PView(1) >= 360)PView(1) -= 360;
+		Invalidate();
+	}
+	else if (nChar == 39) {	//вправо
+		PView(1) -= step;
+		if (PView(1) < 0)PView(1) += 360;
+		Invalidate();
+	}
+	else if (nChar == 38) {	//вверх
+		PView(2) += step;
+		if (PView(2) >= 360)PView(2) -= 360;
+		Invalidate();
+	}
+	else if (nChar == 40) { //вниз
+		PView(2) -= step;
+		if (PView(2) < 0)PView(2) += 360;
+		Invalidate();
+	}
+	//движение света на WASD
+	else if (nChar == 65) {		//A
+		PLight(1) -= step;
+		if (PLight(1) >= 360)PLight(1) -= 360;
+		Invalidate();
+	}
+	else if (nChar == 68) {	//D
+		PLight(1) += step;
+		if (PLight(1) < 0)PLight(1) += 360;
+		Invalidate();
+	}
+	else if (nChar == 87) {	//W
+		PLight(2) -= step;
+		if (PLight(2) < 0)PLight(2) += 360;
+		Invalidate();
+	}
+	else if (nChar == 83) { //S
+		PLight(2) += step;
+		if (PLight(2) >= 360)PLight(2) -= 360;
+		Invalidate();
+	}
 }
 

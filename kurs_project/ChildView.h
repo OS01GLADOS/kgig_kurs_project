@@ -36,6 +36,7 @@ public:
 public:
 	virtual ~CChildView();
 	void set_model_parameters();
+	void OnKeyDown(UINT nChar, UINT nRepCount, UINT nFlags);
 	// Созданные функции схемы сообщений
 protected:
 	afx_msg void OnPaint();

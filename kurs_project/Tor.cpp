@@ -3,10 +3,10 @@
 #include "CMatrix.h"
 #include "MyGDI.h"
 
-#define NOV 100
+#define NOV 51
 
 #define NOVB 20
-#define NOVM 100
+#define NOVM 51
 
 const double pi = 3.14159265358979;
 
@@ -43,6 +43,7 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 		CMatrix VE(3), R1(3), R2(3), V1(3), V2(3), VN(3);
 		double sm;
 
+
 		int j1 = (PView(1) / 180 * NoVb / 2);
 		if (j1 >= NoVb)j1 = 0;
 		int j0 = j1 + NoVb / 2;
@@ -65,8 +66,8 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 
 			
 
-
-			for (int i = i0;; i--) {//обход малых кругов
+//обход малых кругов
+			for (int i = i0;; i--) {
 				if (i < 0)
 					i = NoVm - 1;
 				int k = i - 1;//номер следующей точки малого круга
@@ -90,7 +91,7 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 					}
 					//расчёт освещённости для диффузной модели освещения
 					if (Lights !=0)
-						Lights = 1 - Lights;
+						Lights =  1 - Lights;
 				}
 				else Lights = 0;
 
@@ -104,7 +105,7 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 				p[1] = MasVert[k + jr * NoVm];
 				p[2] = MasVert[k + lr * NoVm];
 				p[3] = MasVert[i + lr * NoVm];
-				CBrush* br = new CBrush(RGB(R*Lights, G*Lights, B*Lights));
+				CBrush* br = new CBrush(RGB(R*Lights+6, G*Lights+6, B*Lights+6));
 				dc.SelectObject(br);
 				dc.Polygon(p, 4);
 				delete br;
@@ -125,16 +126,17 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 			i1 = i0 - 1;
 			if (i1 < 0)i1 = NoVm - 1;
 
-
-				for (int i = i0;; i--) {//обход малых кругов
+			
+//обход малых кругов
+				for (int i = i0;; i--) {
 					if (i < 0)
 						i = NoVm - 1;
 					int k = i - 1;//номер следующей точки малого круга
 					if (k < 0)
 						k = NoVm - 1;
-					R1 = Verticles.GetCol(k + jr * NoVm, 0, 2);//текущая точка на малом круге
-					R2 = Verticles.GetCol(i + jr * NoVm, 0, 2);//следующая точка на малом круге
-					VE = Verticles.GetCol(i + lr * NoVm, 0, 2);//точка на следующем малом круге
+					R1 = Verticles.GetCol(k + jl * NoVm, 0, 2);//текущая точка на малом круге
+					R2 = Verticles.GetCol(i + jl * NoVm, 0, 2);//следующая точка на малом круге
+					VE = Verticles.GetCol(i + ll * NoVm, 0, 2);//точка на следующем малом круге
 				V1 = R2 - R1; V2 = VE - R1;
 				VN = VectorMult(V2, V1);//вектор нормали
 
@@ -143,10 +145,10 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 					if (ScalarMult(VN, LightCart) >= 0 && sm >= 0) {
 						//расчет освещенности для диффузионной модели освещения
 						if (isDiffusel)
-							Lights = ( (int)(  cosViV2(VN, LightCart) *100  ) )/100;
+							Lights = (int) cosViV2(VN, LightCart) ;
 
 						else {
-							Lights = ((int) ( cosViV2(VN, ViewCart)  *100 ) ) /100;
+							Lights = (int) pow(cosViV2(VN, ViewCart), 1);
 						}
 						//расчет освещенности для зеркальной модели освещения
 						if (Lights != 0)
@@ -167,6 +169,8 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 				}
 				if (k == i0)break;
 			}
+
+
 			if (jr == j1)break;
 		}
 		delete pn;
