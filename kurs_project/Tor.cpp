@@ -3,14 +3,14 @@
 #include "CMatrix.h"
 #include "MyGDI.h"
 
-#define NOV 36
+#define NOV 100
 
 #define NOVB 20
-#define NOVM 36
+#define NOVM 100
 
 const double pi = 3.14159265358979;
 
-void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COLORREF col) {
+void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COLORREF col, bool isDiffusel) {
 	try {
 		CPen* pn = new CPen(PS_NULL, 0, RGB(0, 0, 0)/*RGB(0, 0, 0)*/);
 		dc.SelectObject(pn);
@@ -82,9 +82,19 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 				//проверка видимости грани   (sm >= 0)
 				if (ScalarMult(VN, LightCart) >= 0 && (sm >= 0)) {
 					//расчет освещенности для диффузионной модели освещения
-					Lights = (int)((I*Kd*cosViV2(VN, LightCart)));
+					if (isDiffusel)
+						Lights = ((int)(cosViV2(VN, LightCart) * 100)) / 100;
+					//Lights = (int)(I*Kd*cosViV2(VN, LightCart));
+					else {
+						Lights = ((int)   cosViV2(VN, ViewCart)  * 100)   / 100;
+					}
+					//расчёт освещённости для диффузной модели освещения
+					if (Lights !=0)
+						Lights = 1 - Lights;
 				}
 				else Lights = 0;
+
+		
 
 				//Lights = 0.5;
 
@@ -127,12 +137,20 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 					VE = Verticles.GetCol(i + lr * NoVm, 0, 2);//точка на следующем малом круге
 				V1 = R2 - R1; V2 = VE - R1;
 				VN = VectorMult(V2, V1);//вектор нормали
+
 				sm = ScalarMult(VN, ViewCart);
 				if (true) {//проверка видимости грани (sm >= 0)
 					if (ScalarMult(VN, LightCart) >= 0 && sm >= 0) {
 						//расчет освещенности для диффузионной модели освещения
-						Lights = (int)(I*Kd*cosViV2(VN, LightCart));
+						if (isDiffusel)
+							Lights = ( (int)(  cosViV2(VN, LightCart) *100  ) )/100;
+
+						else {
+							Lights = ((int) ( cosViV2(VN, ViewCart)  *100 ) ) /100;
+						}
 						//расчет освещенности для зеркальной модели освещения
+						if (Lights != 0)
+							Lights = 1 - Lights;
 					}
 					else Lights = 0;
 

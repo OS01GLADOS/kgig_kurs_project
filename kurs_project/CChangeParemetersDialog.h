@@ -90,11 +90,13 @@ public:
 	
 
 	bool diffusModel = true;
+	bool bisModelChanged = false;
 	CButton RadioDiffuselModel;
 	afx_msg void OnBnClickedDiffuseModel();
 	CButton MirrorModel;
 	afx_msg void OnBnClickedMirrorModel();
 	bool isModelDiffusial();
+	bool ifModelChanged();
 
 
 	COLORREF ChangedColor;

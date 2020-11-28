@@ -231,6 +231,10 @@ void CChangeParemetersDialog::OnEnChangeWatcherTheta()
 	try {
 		iWatcherTheta = _ttoi(input);
 		iWatcherTheta = returnNormalAngle(iWatcherTheta);
+		if (iWatcherTheta < 10)
+			iWatcherTheta = 10;
+		if (iWatcherTheta > 60)
+			iWatcherTheta = 60;
 		bifWatcherThetachanged = true;
 	}
 	catch (...)
@@ -250,16 +254,19 @@ bool CChangeParemetersDialog::ifWatcherThetachanged() {
 
 void CChangeParemetersDialog::OnBnClickedDiffuseModel()
 {
-	// TODO: добавьте свой код обработчика уведомлений
 	diffusModel = RadioDiffuselModel.GetCheck();
+	bisModelChanged = true;
 }
 void CChangeParemetersDialog::OnBnClickedMirrorModel()
 {
 	diffusModel = !(MirrorModel.GetCheck());
-	// TODO: добавьте свой код обработчика уведомлений
+	bisModelChanged = true;
 }
 bool CChangeParemetersDialog::isModelDiffusial() {
 	return diffusModel;
+}
+bool CChangeParemetersDialog::ifModelChanged() {
+	return bisModelChanged;
 }
 
 

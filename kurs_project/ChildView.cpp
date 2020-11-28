@@ -18,7 +18,7 @@
 
 int R = 60 , r =30;
 
-int Pview0 = 1000;
+int Pview0 = 10;
 int Pview1 = 0;
 int Pview2 = 50;
 
@@ -154,13 +154,14 @@ void CChildView::OnPaint()
 	dc.TextOutW(startX + 5 + 270, startY + 80, text, text.GetLength());
 
 	text = L"Модель: ";
+
 	if (modelParam)
 		text.Append(L"Диффузная");
 	else
 		text.Append(L"Зеркальная");
 	dc.TextOutW(startX + 5 + 100, startY + 5, text, text.GetLength());
 
-	pp.DrawEnlighted(dc, PView, PLight, CRect(centerX - a/2, centerY - a / 2, centerX + a / 2, centerY + a / 2), col/*+модель*/);
+	pp.DrawEnlighted(dc, PView, PLight, CRect(centerX - a/2, centerY - a / 2, centerX + a / 2, centerY + a / 2), col, modelParam);
 
 }
 void CChildView::set_model_parameters()
@@ -188,8 +189,8 @@ void CChildView::set_model_parameters()
 
 	if (ParametersDialog.ifColorchanged())
 		col = ParametersDialog.GetChangedColor();
-
-	modelParam = ParametersDialog.isModelDiffusial();
+	if (ParametersDialog.ifModelChanged())
+		modelParam = ParametersDialog.isModelDiffusial();
 
 	PView.RedimMatrix(3);
 	PView(0) = Pview0;

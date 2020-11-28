@@ -13,6 +13,6 @@ public:
 public :
 	Top(void);
 	Top(int R, int r);
-	void DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COLORREF col);
+	void DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COLORREF col, bool);
 	~Top();
 };
