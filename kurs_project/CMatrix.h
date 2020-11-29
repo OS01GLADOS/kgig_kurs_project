@@ -40,13 +40,6 @@ public:
 
 };
 
-CMatrix Translate2D(double x, double y);
-CMatrix Rotate2D(double fi);
-CMatrix Translate3D(double x, double y, double z);
-CMatrix Rotate3Dz(double fi);
-CMatrix Rotate3Dx(double fi);
-CMatrix Rotate3Dy(double fi);
-
 
 
 

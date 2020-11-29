@@ -8,14 +8,14 @@
 #define NOVB 31
 #define NOVM 51
 
-const double pi = 3.14159265358979;
+//const double pi = 3.14159265358979;
 
 void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COLORREF col, bool isDiffusel) {
 	try {
 		CPen* pn = new CPen(PS_NULL, 0, RGB(0, 0, 0)/*RGB(0, 0, 0)*/);
 		dc.SelectObject(pn);
 		double R = GetRValue(col), G = GetGValue(col), B = GetBValue(col);
-		double Kd = 1, Ks = 1,  I = 1, Lights = 0;
+		double Kd = 1, Ks = 1,  I = 1, Lights = 0, r1col;
 		//преобразование сферических координат наблюдателя в декартовы
 		CMatrix ViewCart = SphereToCart(PView);
 		//преобразование сферических координат источника света в декартовы
@@ -54,7 +54,7 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 			j1 += NoVb / 2;
 			if (j1 >= NoVb)j1 -= NoVb;
 		}
-
+		/*
 		for (int jr = j0, jl = j0;; jr++, jl--) {//обход большого круга
 			if (jr >= NoVb)
 				jr = 0;
@@ -67,7 +67,9 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 			
 
 //обход малых кругов
+
 			for (int i = i0;; i--) {
+
 				if (i < 0)
 					i = NoVm - 1;
 				int k = i - 1;//номер следующей точки малого круга
@@ -82,16 +84,17 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 				sm = ScalarMult(VN, ViewCart);
 				//проверка видимости грани   (sm >= 0)
 				if (ScalarMult(VN, LightCart) >= 0 && (sm >= 0)) {
-					//расчет освещенности для диффузионной модели освещения
 					if (isDiffusel)
 						Lights = (int) cosViV2(VN, ViewCart)*cosViV2(VN, LightCart);
 
 					else {
-						Lights = (int) pow(cosViV2(VN, ViewCart)*cosViV2(VN, LightCart), 1.75);
+						Lights = (int)pow(cosViV2(VN, ViewCart)*cosViV2(VN, LightCart), 1.75);
 					}
-					//расчёт освещённости для диффузной модели освещения
+	//				if (Lights == 1)
+	//					Lights == 1;
 					if (Lights !=0)
 						Lights = 1-   Lights;
+					
 				}
 				else Lights = 0;
 
@@ -105,7 +108,17 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 				p[1] = MasVert[k + jr * NoVm];
 				p[2] = MasVert[k + lr * NoVm];
 				p[3] = MasVert[i + lr * NoVm];
-				CBrush* br = new CBrush(RGB(R*Lights+6, G*Lights+6, B*Lights+6));
+				CBrush* br = new CBrush(RGB(0, 255, 0));
+				dc.SelectObject(br);
+				dc.Polygon(p, 4);
+
+				r1col = (int)(R * Lights) % 256;
+				if (r1col != 0 && r1col <0)
+					r1col = 256 - abs(r1col);
+				delete br;
+
+
+				br = new CBrush(RGB(r1col, G*Lights, B*Lights));
 				dc.SelectObject(br);
 				dc.Polygon(p, 4);
 				delete br;
@@ -150,8 +163,8 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 							Lights = (int) pow(cosViV2(VN, ViewCart)*cosViV2(VN, LightCart), 1.75);
 						}
 
-						if (Lights != 0)
-							Lights = 1- Lights;
+						if (Lights !=0)
+							Lights *=  -1;
 					}
 					else Lights = 0;
 
@@ -161,6 +174,7 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 					p[1] = MasVert[i + jl * NoVm];
 					p[2] = MasVert[i + ll * NoVm];
 					p[3] = MasVert[k + ll * NoVm];
+
 					CBrush* br = new CBrush(RGB(R*Lights, G*Lights, B*Lights));
 					dc.SelectObject(br);
 					dc.Polygon(p, 4);
@@ -172,6 +186,86 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 
 			if (jr == j1)break;
 		}
+*/
+for (int jr = j0, jl = j0;; jr++, jl--) {//обход большого круга
+	if (jr >= NoVb)
+		jr = 0;
+	int lr = jr + 1;//номер следующего малого круга
+	if (lr >= NoVb)
+		lr = 0;
+	int i0 = (PView(2) / 180 * NoVm / 2), i1 = i0 - 1;
+	if (i1 < 0)i1 = NoVm - 1;
+	for (int i = i0;; i++) {//обход малых кругов
+		if (i >= NoVm)i = 0;
+		int k = i + 1;//номер следующей точки малого круга
+		if (k >= NoVm)k = 0;
+		R1 = Verticles.GetCol(i + jr * NoVm, 0, 2);//текущая точка на малом круге
+		R2 = Verticles.GetCol(k + jr * NoVm, 0, 2);//следующая точка на малом круге
+		VE = Verticles.GetCol(i + lr * NoVm, 0, 2);//точка на следующем малом круге
+		V1 = R2 - R1; V2 = VE - R1;
+		VN = VectorMult(V2, V1);//вектор нормали
+		sm = ScalarMult(VN, ViewCart);
+		if (sm >= 0) {//проверка видимости грани
+			if (ScalarMult(VN, LightCart) >= 0) {
+				//расчет освещенности для диффузионной модели освещения
+				Lights = (double)I*Kd*cosViV2(VN, LightCart);
+			}
+			else Lights = 0;
+			//прорисовка полигона
+			CPoint* p = new CPoint[4];
+			p[0] = MasVert[k + jr * NoVm];
+			p[1] = MasVert[i + jr * NoVm];
+			p[2] = MasVert[i + lr * NoVm];
+			p[3] = MasVert[k + lr * NoVm];
+			CBrush* br = new CBrush(RGB(R*Lights, G*Lights, B*Lights));
+			dc.SelectObject(br);
+			dc.Polygon(p, 4);
+			delete br;
+		}
+		if (i == i1)break;
+	}
+	//
+	if (jl >= NoVb)jl = 0;
+	if (jl < 0)
+		jl = NoVb - 1;
+	int ll = jl + 1;//номер следующего малого круга
+	if (ll >= NoVb)
+		ll = 0;
+	i0 = (PView(2) / 180 * NoVm / 2);
+	i1 = i0 - 1;
+	if (i1 < 0)i1 = NoVm - 1;
+	for (int i = i0;; i++) {//обход малых кругов
+		if (i >= NoVm)i = 0;
+		int k = i + 1;//номер следующей точки малого круга
+		if (k >= NoVm)k = 0;
+		R1 = Verticles.GetCol(i + jl * NoVm, 0, 2);//текущая точка на малом круге
+		R2 = Verticles.GetCol(k + jl * NoVm, 0, 2);//следующая точка на малом круге
+		VE = Verticles.GetCol(i + ll * NoVm, 0, 2);//точка на следующем малом круге
+		V1 = R2 - R1; V2 = VE - R1;
+		VN = VectorMult(V2, V1);//вектор нормали
+		sm = ScalarMult(VN, ViewCart);
+		if (sm >= 0) {//проверка видимости грани
+			if (ScalarMult(VN, LightCart) >= 0) {
+				//расчет освещенности для диффузионной модели освещения
+				Lights = (double)I*Kd*cosViV2(VN, LightCart);
+				//расчет освещенности для зеркальной модели освещения
+			}
+			else Lights = 0;
+			//прорисовка полигона
+			CPoint* p = new CPoint[4];
+			p[0] = MasVert[k + jl * NoVm];
+			p[1] = MasVert[i + jl * NoVm];
+			p[2] = MasVert[i + ll * NoVm];
+			p[3] = MasVert[k + ll * NoVm];
+			CBrush* br = new CBrush(RGB(R*Lights, G*Lights, B*Lights));
+			dc.SelectObject(br);
+			dc.Polygon(p, 4);
+			delete br;
+		}
+		if (i == i1)break;
+	}
+	if (jr == j1)break;
+}
 		delete pn;
 	}
 	catch (...) {
@@ -200,7 +294,7 @@ Top::Top(void)
 		}
 	}
 	//rs = CRectD(-100, -100, 100, 100);
-	rs = CRect(-100, -100, 100, 100);
+	rs = CRectD(-100, -100, 100, 100);
 }
 
 Top::Top(int R, int r)
@@ -222,7 +316,7 @@ Top::Top(int R, int r)
 		}
 	}
 	//rs = CRectD(-100, -100, 100, 100);
-	rs = CRect(-100, -100, 100, 100);
+	rs = CRectD(-100, -100, 100, 100);
 
 }
 

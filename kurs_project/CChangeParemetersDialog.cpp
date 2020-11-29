@@ -147,6 +147,10 @@ void CChangeParemetersDialog::OnEnChangeLightFi()
 	try {
 		iLightFi = _ttoi(input);
 		iLightFi = returnNormalAngle(iLightFi);
+		if (iLightFi > 90)
+			iLightFi = 90;
+		if (iLightFi < 0)
+			iLightFi = 0;
 		bifLightFichanged = true;
 	}
 	catch (...)
@@ -169,6 +173,10 @@ void CChangeParemetersDialog::OnEnChangeLightTheta()
 	try {
 		iLightTheta = _ttoi(input);
 		iLightTheta = returnNormalAngle(iLightTheta);
+		if (iLightTheta < 0)
+			iLightTheta = 0;
+		if (iLightTheta > 85)
+			iLightTheta = 85;
 		bifLightThetachanged = true;
 	}
 	catch (...)
@@ -209,6 +217,10 @@ void CChangeParemetersDialog::OnEnChangeWatcherFi()
 	try {
 		iWatcherFi = _ttoi(input);
 		iWatcherFi = returnNormalAngle(iWatcherFi);
+		if (iWatcherFi < 0)
+			iWatcherFi = 0;
+		if (iWatcherFi > 20)
+			iWatcherFi = 20;
 		bifWatcherFichanged = true;
 	}
 	catch (...)

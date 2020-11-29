@@ -22,7 +22,7 @@ int Pview0 = 1000;
 int Pview1 = 0;
 int Pview2 = 50;
 
-int Plight0 =1;
+int Plight0 =1000;
 int Plight1 = 0;
 int Plight2 = 65;
 
@@ -224,6 +224,7 @@ void CChildView::OnSize(UINT nType, int cx, int cy)
 }
 
 void CChildView::OnKeyDown(UINT nChar, UINT nRepCount, UINT nFlags) {
+	/*
 	int step = 10;
 	//движение наблюдателя на стрелки
 	if (nChar == 37) {		//влево
@@ -267,5 +268,6 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCount, UINT nFlags) {
 		if (PLight(2) >= 360)PLight(2) -= 360;
 		Invalidate();
 	}
+	*/
 }
 
