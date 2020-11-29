@@ -22,15 +22,15 @@ int Pview0 = 1000;
 int Pview1 = 0;
 int Pview2 = 50;
 
-int Plight0 = 100;
-int Plight1 = 30;
-int Plight2 = 15;
+int Plight0 =1;
+int Plight1 = 0;
+int Plight2 = 65;
 
 int colR = 255;
 int colG = 0;
 int colB = 0;
 
-bool modelParam = true;
+bool modelParam = false;
 
 
 
@@ -94,6 +94,14 @@ void CChildView::OnPaint()
 {
 	CFrameWnd* pWnd = GetParentFrame();
 
+	int Pview0out = PView(0);
+	int Pview1out = PView(1);
+	int Pview2out = PView(2);
+
+	int Plight0out = PLight(0);
+	int Plight1out = PLight(1);
+	int Plight2out = PLight(2);
+
 	CRect SpaceToDraw = WinRect;
 	CPoint CurrPoint = SpaceToDraw.TopLeft();
 	int startX = CurrPoint.x, startY = CurrPoint.y;
@@ -125,32 +133,32 @@ void CChildView::OnPaint()
 	dc.TextOutW(startX + 5, startX + 20, text, text.GetLength());
 
 	text = L"Наблюдатель_R = ";
-	swprintf_s(buffer, L"%d", Pview0);
+	swprintf_s(buffer, L"%d", Pview0out);
 	text.Append(buffer);
 	dc.TextOutW(startX + 5, startY + 40, text, text.GetLength());
 
 	text = L"Наблюдатель_Fi = ";
-	swprintf_s(buffer, L"%d", Pview1);
+	swprintf_s(buffer, L"%d", Pview1out);
 	text.Append(buffer);
 	dc.TextOutW(startX + 5, startY + 60, text, text.GetLength());
 
 	text = L"Наблюдатель_Theta = ";
-	swprintf_s(buffer, L"%d", Pview2);
+	swprintf_s(buffer, L"%d", Pview2out);
 	text.Append(buffer);
 	dc.TextOutW(startX + 5, startY + 80, text, text.GetLength());
 
 	text = L"Свет_R = ";
-	swprintf_s(buffer, L"%d", Plight0);
+	swprintf_s(buffer, L"%d", Plight0out);
 	text.Append(buffer);
 	dc.TextOutW(startX + 5 + 270, startY + 40, text, text.GetLength());
 
 	text = L"Свет_Fi = ";
-	swprintf_s(buffer, L"%d", Plight1);
+	swprintf_s(buffer, L"%d", Plight1out);
 	text.Append(buffer);
 	dc.TextOutW(startX + 5 + 270, startY + 60, text, text.GetLength());
 
 	text = L"Свет_Theta = ";
-	swprintf_s(buffer, L"%d", Plight2);
+	swprintf_s(buffer, L"%d", Plight2out);
 	text.Append(buffer);
 	dc.TextOutW(startX + 5 + 270, startY + 80, text, text.GetLength());
 

@@ -5,7 +5,7 @@
 
 #define NOV 51
 
-#define NOVB 20
+#define NOVB 31
 #define NOVM 51
 
 const double pi = 3.14159265358979;
@@ -15,7 +15,7 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 		CPen* pn = new CPen(PS_NULL, 0, RGB(0, 0, 0)/*RGB(0, 0, 0)*/);
 		dc.SelectObject(pn);
 		double R = GetRValue(col), G = GetGValue(col), B = GetBValue(col);
-		double Kd = 1, Ks = 1, I = 1, Lights = 0;//Lights = 0
+		double Kd = 1, Ks = 1,  I = 1, Lights = 0;
 		//преобразование сферических координат наблюдателя в декартовы
 		CMatrix ViewCart = SphereToCart(PView);
 		//преобразование сферических координат источника света в декартовы
@@ -84,14 +84,14 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 				if (ScalarMult(VN, LightCart) >= 0 && (sm >= 0)) {
 					//расчет освещенности для диффузионной модели освещения
 					if (isDiffusel)
-						Lights = ((int)(cosViV2(VN, LightCart) * 100)) / 100;
-					//Lights = (int)(I*Kd*cosViV2(VN, LightCart));
+						Lights = (int) cosViV2(VN, ViewCart)*cosViV2(VN, LightCart);
+
 					else {
-						Lights = ((int)   cosViV2(VN, ViewCart)  * 100)   / 100;
+						Lights = (int) pow(cosViV2(VN, ViewCart)*cosViV2(VN, LightCart), 1.75);
 					}
 					//расчёт освещённости для диффузной модели освещения
 					if (Lights !=0)
-						Lights =  1 - Lights;
+						Lights = 1-   Lights;
 				}
 				else Lights = 0;
 
@@ -141,18 +141,17 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 				VN = VectorMult(V2, V1);//вектор нормали
 
 				sm = ScalarMult(VN, ViewCart);
-				if (true) {//проверка видимости грани (sm >= 0)
+				//проверка видимости грани (sm >= 0)
 					if (ScalarMult(VN, LightCart) >= 0 && sm >= 0) {
-						//расчет освещенности для диффузионной модели освещения
+						//расчет освещенности
 						if (isDiffusel)
-							Lights = (int) cosViV2(VN, LightCart) ;
-
+							Lights = (int) cosViV2(VN, ViewCart)*cosViV2(VN, LightCart);
 						else {
-							Lights = (int) pow(cosViV2(VN, ViewCart), 1);
+							Lights = (int) pow(cosViV2(VN, ViewCart)*cosViV2(VN, LightCart), 1.75);
 						}
-						//расчет освещенности для зеркальной модели освещения
+
 						if (Lights != 0)
-							Lights = 1 - Lights;
+							Lights = 1- Lights;
 					}
 					else Lights = 0;
 
@@ -166,7 +165,7 @@ void Top::DrawEnlighted(CDC& dc, CMatrix& PView, CMatrix& PLight, CRect& RW, COL
 					dc.SelectObject(br);
 					dc.Polygon(p, 4);
 					delete br;
-				}
+				
 				if (k == i0)break;
 			}
 
