@@ -1,32 +1,19 @@
+//приложение 7
 #include "pch.h"
 #include "LIB.H"
 #include "Math.h"
-
-CRectD::CRectD(double l,double t,double r,double b)
-{
+CRectD::CRectD(double l,double t,double r,double b){
   left=l; 
   top=t; 
   right=r; 
-  bottom=b; 
-}
-//------------------------------------------------------------------------------
-void CRectD::SetRectD(double l,double t,double r,double b)
-{
+  bottom=b; }
+void CRectD::SetRectD(double l,double t,double r,double b){
   left=l; 
   top=t; 
   right=r; 
-  bottom=b; 
-}
-
-//------------------------------------------------------------------------------
-CSizeD CRectD::SizeD()
-{
+  bottom=b; }
+CSizeD CRectD::SizeD(){
   CSizeD cz;
   cz.cx=fabs(right-left);	// Ширина прямоугольной области
   cz.cy=fabs(top-bottom);	// Высота прямоугольной области
-  return cz;
-}
-
-
-
-
+  return cz;}

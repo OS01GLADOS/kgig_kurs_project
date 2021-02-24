@@ -41,13 +41,14 @@ public:
 
 
 	//выше - работает
-
+	/*
 	CEdit LightR;
 	int iLightR;
 	bool bifLightRchanged = false;
 	afx_msg void OnEnChangeLightR();
 	int GetLightR();
 	bool ifLightRchanged();
+	*/
 
 	CEdit LightFi;
 	int iLightFi;
@@ -63,15 +64,14 @@ public:
 	int GetLightTheta();
 	bool ifLightThetachanged();
 
-
-
-
+	/*
 	CEdit WatcherR;
 	int iWatcherR;
 	bool bifWatcherRchanged = false;
 	afx_msg void OnEnChangeWatcherR();
 	int GetWatcherR();
 	bool ifWatcherRchanged();
+	*/
 
 	CEdit WatcherFi;
 	int iWatcherFi;

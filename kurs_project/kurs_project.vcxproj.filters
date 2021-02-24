@@ -54,12 +54,6 @@
     <ClInclude Include="LIB.H">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="АфинПреобр2.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="АфинПреобр3.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kurs_project.cpp">
@@ -90,12 +84,6 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="LIB.CPP">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="АфинПреобр2.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="АфинПреобр3.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
